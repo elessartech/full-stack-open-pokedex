@@ -41,14 +41,14 @@ jobs:
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
       - name: deployed to heroku success
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: ${{ success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         with:
             severity: info
             details: A new version of Pokedex deployed!
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: build fail
-          uses: rjstone/discord-webhook-notify@v1
+          uses: rjstone/discord-webhook-notify@v1.0.4
           if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
           with:
               severity: error
