@@ -7,8 +7,8 @@ on:
     pull_request:
       branches: [master]
       types: [opened, synchronize]
-  schedule:
-    - cron: "* * 1 * *"
+  #schedule:
+  #  - cron: "* * 1 * *"
 
 jobs:
   simple_deployment_pipeline:
@@ -56,13 +56,13 @@ jobs:
           severity: error
           details: Build failed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: check the deployed service URL
-        uses: jtalk/url-health-check-action@v3
-        with:
-          url: https://pokedex-deploy.herokuapp.com/health|https://pokedex-deploy.herokuapp.com
-          follow-redirect: no
-          max-attempts: 3
-          retry-delay: 5s
+      #- name: check the deployed service URL
+      #  uses: jtalk/url-health-check-action@v3
+      #  with:
+      #    url: https://pokedex-deploy.herokuapp.com/health|https://pokedex-deploy.herokuapp.com
+      #    follow-redirect: no
+      #    max-attempts: 3
+      #    retry-delay: 5s
 
   tag_release:
     permissions: write-all
