@@ -45,27 +45,27 @@ jobs:
       #    healthcheck: "https://pokedex-deploy.herokuapp.com/health"
       #    checkstring: "ok"
       #    rollbackonhealthcheckfailed: true
-      #- name: deployed to heroku success
-      #  uses: rjstone/discord-webhook-notify@v1.0.4
-      #  if: ${{ success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-      #  with:
-      #    severity: info
-      #    details: A new version of Pokedex deployed!
-      #    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      #- name: build fail
-      #  uses: rjstone/discord-webhook-notify@v1.0.4
-      #  if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-      #  with:
-      #    severity: error
-      #    details: Build failed!
-      #    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      #- name: check the deployed service URL
-      #  uses: jtalk/url-health-check-action@v3
-      #  with:
-      #    url: https://pokedex-deploy.herokuapp.com/health|https://pokedex-deploy.herokuapp.com
-      #    follow-redirect: no
-      #    max-attempts: 3
-      #    retry-delay: 5s
+      - name: deploy success
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        with:
+          severity: info
+          details: A new version of Pokedex deployed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: build fail
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        with:
+          severity: error
+          details: Build failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: check the deployed service URL
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: https://fullstack-cd.onrender.com/health|https://fullstack-cd.onrender.com
+          follow-redirect: no
+          max-attempts: 3
+          retry-delay: 5s
 
   tag_release:
     permissions: write-all
