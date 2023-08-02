@@ -32,30 +32,33 @@ jobs:
           build: npm run build
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: deploy to heroku
+      - name: deploy to render
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        uses: akhileshns/heroku-deploy@v3.12.13 # This is the action
-        with: 
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "pokedex-deploy" #Must be unique in Heroku
-          heroku_email: "maksim.ilmast@yandex.com"
-          healthcheck: "https://pokedex-deploy.herokuapp.com/health"
-          checkstring: "ok"
-          rollbackonhealthcheckfailed: true
-      - name: deployed to heroku success
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        if: ${{ success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        with:
-          severity: info
-          details: A new version of Pokedex deployed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: build fail
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        with:
-          severity: error
-          details: Build failed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      #- name: deploy to heroku
+      #  if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+      #  uses: akhileshns/heroku-deploy@v3.12.13 # This is the action
+      #  with: 
+      #    heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+      #    heroku_app_name: "pokedex-deploy" #Must be unique in Heroku
+      #    heroku_email: "maksim.ilmast@yandex.com"
+      #    healthcheck: "https://pokedex-deploy.herokuapp.com/health"
+      #    checkstring: "ok"
+      #    rollbackonhealthcheckfailed: true
+      #- name: deployed to heroku success
+      #  uses: rjstone/discord-webhook-notify@v1.0.4
+      #  if: ${{ success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+      #  with:
+      #    severity: info
+      #    details: A new version of Pokedex deployed!
+      #    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      #- name: build fail
+      #  uses: rjstone/discord-webhook-notify@v1.0.4
+      #  if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+      #  with:
+      #    severity: error
+      #    details: Build failed!
+      #    webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       #- name: check the deployed service URL
       #  uses: jtalk/url-health-check-action@v3
       #  with:
